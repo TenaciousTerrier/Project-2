@@ -32,68 +32,65 @@ supply_blanks = ["increase", "increase", "price", "upward"]
 demand_blanks = ["increase", "decrease", "quantity", "downward"]
 
 def game_choice(difficulty):
-	if difficulty == "easy":
-		return demand_madlib
-	if difficulty == "medium":
-		return supply_madlib
-	if difficulty == "hard":
-		return money_madlib
-	else:
-		return None
+        """ Takes a string as input and outputs the function fill_blanks if the string is equal to 'easy', 'medium', or 'hard' otherwise output is None.
+        """
+        if difficulty == "easy":
+                return fill_blanks(demand_madlib, demand_blanks)
+        if difficulty == "medium":
+                return fill_blanks(supply_madlib, supply_blanks)
+        if difficulty == "hard":
+                return fill_blanks(money_madlib, money_blanks)
+        else:
+                return None
 
-def game_answers(difficulty):
-	if difficulty == "easy":
-		return demand_blanks
-	if difficulty == "medium":
-		return supply_blanks
-	if difficulty == "hard":
-		return money_blanks
-	else:
-		return None
 
-def new_game(): 
-	difficulty = raw_input("Do you want to play an easy, medium, or hard game? [Note: Please type 'easy', 'medium', or 'hard']: ")
-	print ""
-	output = [game_choice(difficulty), difficulty]
-	if output[0] != None: 
-		return output
-	else:
-		print "You did not choose an available game."
-		print ""
-		return new_game()
 
-def fill_blanks(choice, difficulty):	
-        print choice
-        print ""
-        correct_words = game_answers(difficulty)
-
+def user_blanks(choice, correct_words):
+        """ Prompts the user to fill in the blanks in string string choice. Checks the user input against the list correct_words.
+        """
         i = 0
-        while i <= range(len(correct_words)-1):
-                if i >= len(correct_words):
-                        break
+        while i < len(correct_words):
                 user_input = raw_input("What is in the blank (___" + str(i + 1) + "___)? ")
                 print ""
                 if user_input == correct_words[i]:
-                        i = i + 1
-                        print "That is correct!"
-                        print ""
+                        i += 1
                         choice = choice.replace("___" + str(i) + "___", user_input)
                         print choice
-                        print ""
                 else:
                         i = i
                         print "Try again!"
-                        print ""
-        # print choice
+                print ""
+
+def fill_blanks(choice, correct_words):
+        """ Takes a string choice and list correct_words as inputs and returns a modified string choice and correct_words in a list as output.
+        """
+        print choice
+        print ""
+        user_blanks(choice, correct_words)
         print ""
         print "Congratulations! You have completed this exercise!"
         print ""
+        return [choice, correct_words]
+
+def new_game():
+        """ Starts a new reverse madlibs game to help the user understand basic economics concepts.
+        """
+        difficulty = raw_input("Do you want to play an easy, medium, or hard game? [Note: Please type 'easy', 'medium', or 'hard']: ")
+        print ""
+        output = game_choice(difficulty)
+        if output != None: 
+                return output
+        else:
+                print "You did not choose an available game."
+                print ""
+                return new_game()
 
 def play_game():
+        """ Starts a new reverse madlibs game and allows the user to choose between three different levels: easy, medium, or hard
+        """
         print "Today you will be playing some reverse madlib games to help you study introductory economics concepts."
         print ""
         madlib = new_game()
-        fill_blanks(madlib[0], madlib[1])
         user_input = raw_input("Do you want to keep playing (Y/N)? ")
         print ""
         print ""
